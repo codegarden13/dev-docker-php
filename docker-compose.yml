@@ -1,0 +1,78 @@
+# basics from https://github.com/quandes/wordpress-docker-compose/blob/master/docker-compose.yml
+# networks for any service is not needed because of default network that compose creates
+
+# https://docs.docker.com/get-started/docker-concepts/running-containers/sharing-local-files/
+# required to run wordpress-cli with the same user-id as wordpress. This way there are no permission problems when running the cli
+# user: '33:33'
+# WP CLI needs the same environment variables that used for the Wordpress image. 
+# This is why i needet to create seperate wpcl instances for prpd and staging wordpress
+
+
+services:
+  db:                 # mariadb für mac
+    # docker MySQL database with persistent storage.
+    # image: mysql:8.0
+    # image: mariadb:10.6.4-focal
+    # MariaDB only creates databases on startup using the MYSQL_DATABASE env variable — and only one database can be created this way.
+    container_name: "${COMPOSE_PROJECT_NAME}-mysql"
+    image: mariadb:latest
+    ports:
+      - ${IP}:3307:3307 # change ip if required
+
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init-db:/docker-entrypoint-initdb.d # this will hold the sql for dbs
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: d3_articles
+
+
+    command: >
+      --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin:         # depends on DB https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+
+    container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
+    
+    depends_on:
+      - db
+
+    image: arm64v8/phpmyadmin
+    
+    ports:
+      - ${PHP_MY_ADMIN_PORT}:80
+
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 500M
+      MEMORY_LIMIT: 1010M
+      MAX_EXECUTION_TIME: 100000
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+  
+  apache:
+    container_name: "${COMPOSE_PROJECT_NAME}-apache"
+    image: php:8.1-apache  # or another PHP version
+    ports:
+      - "8181:80"    # prod site
+      - "8182:8182"  # stg site (via virtual host on port 8182)
+    volumes:
+      - ./prod:/var/www/prod
+      - ./stg:/var/www/stg
+      - ./input-data/prd.conf:/etc/apache2/sites-enabled/prd.conf #vhosts
+      - ./input-data/stg.conf:/etc/apache2/sites-enabled/stg.conf #vhosts
+    depends_on:
+      - db
+    restart: always
+
+
+  
+volumes:
+    input-data:
+    db_data:
+    prd:
+    stg: 

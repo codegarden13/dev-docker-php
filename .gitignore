@@ -1,0 +1,8 @@
+apache/
+prod/
+stg/
+.env
+.DS_Store
+.gitignore
+/input-data
+init-db/
