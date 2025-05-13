@@ -1,13 +1,3 @@
-# basics from https://github.com/quandes/wordpress-docker-compose/blob/master/docker-compose.yml
-# networks for any service is not needed because of default network that compose creates
-
-# https://docs.docker.com/get-started/docker-concepts/running-containers/sharing-local-files/
-# required to run wordpress-cli with the same user-id as wordpress. This way there are no permission problems when running the cli
-# user: '33:33'
-# WP CLI needs the same environment variables that used for the Wordpress image. 
-# This is why i needet to create seperate wpcl instances for prpd and staging wordpress
-
-
 services:
   db:                 # mariadb für mac
     # docker MySQL database with persistent storage.
@@ -21,16 +11,21 @@ services:
 
     volumes:
       - db_data:/var/lib/mysql
-      - ./init-db:/docker-entrypoint-initdb.d # this will hold the sql for dbs
+      - ./init-db:/docker-entrypoint-initdb.d # this will hold the sql to create the tables in the database
 
     restart: always
+
+    # Key Rules:MYSQL_DATABASE only works on first container startup (i.e., no existing volume).
+    # Any .sql files in /docker-entrypoint-initdb.d run only on first startup too.
+    # If the volume already exists, MySQL skips re-initializing. 
+    # The db is only created if db data is empty
+    # 
 
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: d3_articles
-
 
     command: >
       --default-authentication-plugin=mysql_native_password
@@ -69,8 +64,6 @@ services:
       - db
     restart: always
 
-
-  
 volumes:
     input-data:
     db_data:
