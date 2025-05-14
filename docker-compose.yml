@@ -56,7 +56,7 @@ services:
       - "8181:80"    # prod site
       - "8182:8182"  # stg site (via virtual host on port 8182)
     volumes:
-      - ./prod:/var/www/prod
+      - ./prd:/var/www/prd
       - ./stg:/var/www/stg
       - ./input-data/prd.conf:/etc/apache2/sites-enabled/prd.conf #vhosts
       - ./input-data/stg.conf:/etc/apache2/sites-enabled/stg.conf #vhosts
