@@ -1,6 +1,4 @@
 apache/
-prod/
-stg/
 .env
 .DS_Store
 .gitignore
