@@ -6,16 +6,31 @@
 - phpmyadmin
 
 ## prerequisites
-1. Before running Docker `compose up -v`, create input-data and put the vhost configuration for apache with the ports like in docker-compose.yml
+1. create directory "input-data", put the vhost configuration for apache with the ports like in docker-compose.yml
 
 ```
 └── 📁input-data
     └── prd.conf
     └── stg.conf
 ```
-2. create an .env file for the variables that are used in docker-compose.yml
-3. create a folder init-db where you may put a sql file to create a database structure for your project. 
-4. create folders 
+Example: stg.conf could look like this:
+
+```
+Listen 8182
+<VirtualHost *:8182>
+    ServerName localhost
+    DocumentRoot /var/www/stg
+    <Directory /var/www/stg>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+ ...
+
+1. create file .env for the variables that are used in docker-compose.yml
+2. create a folder init-db where you may put a sql file to create a database structure for your project. 
 
 run `docker compose up -v`
 
