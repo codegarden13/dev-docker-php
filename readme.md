@@ -5,7 +5,7 @@
   - db named d3_articles
 - phpmyadmin
 
-## prereqisites
+## prerequisites
 1. Before running Docker `compose up -v`, create input-data and put the vhost configuration for apache with the ports like in docker-compose.yml
 
 ```
@@ -20,3 +20,7 @@
 run `docker compose up -v`
 
 Now you can write your php or html to the directories prd or stg, this folders are synced to the webroots of your instances.
+
+## Last but not least....
+**Backup:** Backup ov your working data is crucial. In practise, you work in stg and prd. 
+GIT is perfect, but i had cases when GIT messed up imprtant folders, because i used it in a wrong way. Do not rely on the exposed docker mountpoints that sync local folders with the container. Backup your work !
