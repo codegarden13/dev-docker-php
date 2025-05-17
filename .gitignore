@@ -4,3 +4,4 @@ apache/
 .gitignore
 /input-data
 init-db/
+/logs
