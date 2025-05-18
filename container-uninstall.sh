@@ -32,13 +32,10 @@ done
 volumes=$(docker volume ls -qf dangling=true)
 
 for name in ${volumes}; do 
+echo "try docker volume rm on "$name
     docker volume rm $name
    
 done
-
-
-
-docker system prune -f
 
 rm -Rf stg* >> $logfile
 rm -Rf prd* >> $logfile
