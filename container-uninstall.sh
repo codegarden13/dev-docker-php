@@ -42,6 +42,7 @@ docker system prune -f
 
 rm -Rf stg* >> $logfile
 rm -Rf prd* >> $logfile
+rm -Rf apache* >> $logfile
 
 docker volume rm $(docker volume ls -qf dangling=true)
 
