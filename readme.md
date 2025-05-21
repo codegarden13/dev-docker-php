@@ -57,3 +57,5 @@ Now you can write your php or html to the directories prd or stg, this folders a
 ## Last but not least ... backup.
 **Backup** of your work is crucial. In practise, you work in stg and prd. 
 GIT is perfect, but i had cases when GIT messed up imprtant folders, because i used it in a wrong way. Do not rely on the exposed docker mountpoints that sync local folders with the container. `./backup_subfolders.sh stg ` would zip your staging files to an ICloud location which you can define in a `.env` file.
+
+To **connect to the mysql database** from a php file, use `$mysqli = new mysqli("db", "root", "root", "d3_articles");`
