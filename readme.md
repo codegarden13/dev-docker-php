@@ -36,8 +36,8 @@ Listen 8182
 ```
 <VirtualHost *:80>
     ServerName localhost
-    DocumentRoot /var/www/prod
-    <Directory /var/www/prod>
+    DocumentRoot /var/www/prd
+    <Directory /var/www/prd>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
