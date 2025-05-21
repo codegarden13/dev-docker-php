@@ -6,14 +6,17 @@
 - phpmyadmin
 
 ## prerequisites
-1. create directory "input-data", put the vhost configuration for apache with the ports like in docker-compose.yml
+### create directory "input-data", 
+
+put the vhost configuration for apache with the ports like in docker-compose.yml
 
 ```
 └── 📁input-data
     └── prd.conf
     └── stg.conf
 ```
-Example: stg.conf could look like this:
+
+### stg.conf
 
 ```
 Listen 8182
@@ -27,7 +30,22 @@ Listen 8182
     </Directory>
 </VirtualHost>
 ```
- ...
+
+### prd.conf
+
+```
+<VirtualHost *:80>
+    ServerName localhost
+    DocumentRoot /var/www/prod
+    <Directory /var/www/prod>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+## ... proceed.
 
 1. create file .env for the variables that are used in docker-compose.yml
 2. create a folder init-db where you may put a sql file to create a database structure for your project. 

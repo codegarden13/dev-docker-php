@@ -51,7 +51,14 @@ services:
   
   apache:
     container_name: "${COMPOSE_PROJECT_NAME}-apache"
-    image: php:8.1-apache  # or another PHP version
+    #image: php:8.1-apache  # or another PHP version
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    # this is that the apache installs the extensions.
+
     ports:
       - "8181:80"    # prod site
       - "8182:8182"  # stg site (via virtual host on port 8182)
