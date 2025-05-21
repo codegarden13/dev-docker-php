@@ -33,7 +33,7 @@ volumes=$(docker volume ls -qf dangling=true)
 
 for name in ${volumes}; do 
 echo "try docker volume rm on "$name
-    docker volume rm $name
+    docker volume rm -v $name
    
 done
 
@@ -41,7 +41,7 @@ rm -Rf stg* >> $logfile
 rm -Rf prd* >> $logfile
 rm -Rf apache* >> $logfile
 
-docker volume rm $(docker volume ls -qf dangling=true)
+docker volume rm $(docker volume ls -qf dangling=true) >> $logfile
 
 docker system prune -f
 
