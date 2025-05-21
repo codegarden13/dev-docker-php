@@ -7,7 +7,7 @@
 
 ## prerequisites
 
-## folder structure
+## (My) folder structure
 
 ```
 └── 📁xviz-static-portal
@@ -25,7 +25,7 @@
     └── readme.md
 ```
 
-### create directory "input-data", 
+### Fill directory "input-data" /vhost
 
 put the vhost configuration for apache with the ports like in docker-compose.yml
 
@@ -81,5 +81,5 @@ To **connect to the mysql database** from a php file, use `$mysqli = new mysqli(
 
 ## Security
 
-Change the passwords, use the .env file !
+Change passwords, use the .env file !
 
