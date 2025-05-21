@@ -1,11 +1,30 @@
 ## Dockerfile for simple php dev 
-- apache
-- php
-- database (Mariadb for ARM)
-  - db named d3_articles
-- phpmyadmin
+- Apache
+- PHP 8.1
+- Database (Mariadb for ARM)
+  - Example DB "d3_articles"
+- phpmyadmin (not really needed, maybe just inject "adminer" as a replacement)
 
 ## prerequisites
+
+## folder structure
+
+```
+└── 📁xviz-static-portal
+    └── 📁init-db
+        └── db.sql                  (example database)
+    └── 📁input-data
+        └── prd.conf
+        └── stg.conf
+    └── 📁logs
+    └── .env                        (Variables for docker-compose and bash scripts)
+    └── backup_subfolders.sh
+    └── container-uninstall.sh
+    └── docker-compose.yml
+    └── dockerfile                  (enhanced php configuration)
+    └── readme.md
+```
+
 ### create directory "input-data", 
 
 put the vhost configuration for apache with the ports like in docker-compose.yml
@@ -52,10 +71,15 @@ Listen 8182
 3. run `docker-compose up --build` so that the dockerfile is respected
 4. run `docker compose up -v` after a previous `./container-uninstall.sh`
 
-Now you can write your php or html to the directories prd or stg, this folders are synced to the webroots of your instances.
+Now you can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
 
 ## Last but not least ... backup.
 **Backup** of your work is crucial. In practise, you work in stg and prd. 
 GIT is perfect, but i had cases when GIT messed up imprtant folders, because i used it in a wrong way. Do not rely on the exposed docker mountpoints that sync local folders with the container. `./backup_subfolders.sh stg ` would zip your staging files to an ICloud location which you can define in a `.env` file.
 
 To **connect to the mysql database** from a php file, use `$mysqli = new mysqli("db", "root", "root", "d3_articles");`
+
+## Security
+
+Change the passwords, use the .env file !
+
