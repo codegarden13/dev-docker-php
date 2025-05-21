@@ -31,8 +31,8 @@ Listen 8182
 
 1. create file .env for the variables that are used in docker-compose.yml
 2. create a folder init-db where you may put a sql file to create a database structure for your project. 
-
-run `docker compose up -v`
+3. run `docker-compose up --build` so that the dockerfile is respected
+4. run `docker compose up -v` after a previous `./container-uninstall.sh`
 
 Now you can write your php or html to the directories prd or stg, this folders are synced to the webroots of your instances.
 
