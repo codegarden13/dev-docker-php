@@ -73,13 +73,17 @@ Listen 8182
 
 Now you can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
 
-## Last but not least ... backup.
+## ... backup.
 **Backup** of your work is crucial. In practise, you work in stg and prd. 
-GIT is perfect, but i had cases when GIT messed up imprtant folders, because i used it in a wrong way. Do not rely on the exposed docker mountpoints that sync local folders with the container. `./backup_subfolders.sh stg ` would zip your staging files to an ICloud location which you can define in a `.env` file.
+GIT is perfect, but i had cases when GIT messed up folders, because i used Git wrong. 
+Do not rely on the exposed docker mountpoints that sync local folders with the container.
+Instead, use  `./backup_subfolders.sh stg ` to zip your staging files to a (ICloud?) location that you can define in a `.env` file.
 
 To **connect to the mysql database** from a php file, use `$mysqli = new mysqli("db", "root", "root", "d3_articles");`
 
-## Security
+**Dump** the database with `backup_sql.sh` to the defined backup location, if you want to save database work.
 
-Change passwords, use the .env file !
+## Security
+- make the scripts executable chmod 755 filename.sh
+- Change passwords, use the .env file !
 

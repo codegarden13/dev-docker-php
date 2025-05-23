@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # From here we get BCK_Dest:
 source .env 
 

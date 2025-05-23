@@ -1,44 +1,40 @@
+version: "3.9"  # Optional but recommended for newer Compose features
+
 services:
-  db:                 # mariadb für mac
-    # docker MySQL database with persistent storage.
-    # image: mysql:8.0
-    # image: mariadb:10.6.4-focal
-    # MariaDB only creates databases on startup using the MYSQL_DATABASE env variable — and only one database can be created this way.
+  db:
     container_name: "${COMPOSE_PROJECT_NAME}-mysql"
-    image: mariadb:latest
+    image: mysql:8  # ✅ Switched from mariadb to mysql:8 (multi-arch, includes mysqldump)
+
+    # Expose MySQL on custom port. Ensure ${IP} is set in your .env, or default to 127.0.0.1
     ports:
-      - ${IP}:3307:3307 # change ip if required
+      - ${IP:-127.0.0.1}:3307:3306  # 🔁 Changed right-hand port from 3307 to 3306 (MySQL default)
 
     volumes:
-      - db_data:/var/lib/mysql
-      - ./init-db:/docker-entrypoint-initdb.d # this will hold the sql to create the tables in the database
+      - db_data:/var/lib/mysql                       # ✅ Persist MySQL data
+      - ./init-db:/docker-entrypoint-initdb.d        # ✅ Init SQL scripts on first boot only
 
     restart: always
-
-    # Key Rules:MYSQL_DATABASE only works on first container startup (i.e., no existing volume).
-    # Any .sql files in /docker-entrypoint-initdb.d run only on first startup too.
-    # If the volume already exists, MySQL skips re-initializing. 
-    # The db is only created if db data is empty
-    # 
 
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: d3_articles
+      MYSQL_DATABASE: d3_articles  # ✅ Only created on first run
 
     command: >
       --default-authentication-plugin=mysql_native_password
 
-  phpmyadmin:         # depends on DB https://docs.phpmyadmin.net/en/latest/setup.html#docker-environment-variables
+    # 📝 Improvement Tip:
+    # To avoid relying on .env only, you can use `${VAR:-default}` fallback syntax.
 
+  phpmyadmin:
     container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
-    
+
     depends_on:
       - db
 
-    image: arm64v8/phpmyadmin
-    
+    image: arm64v8/phpmyadmin  # ✅ ARM-compatible image for Apple Silicon
+
     ports:
       - ${PHP_MY_ADMIN_PORT}:80
 
@@ -48,31 +44,34 @@ services:
       MEMORY_LIMIT: 1010M
       MAX_EXECUTION_TIME: 100000
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
-  
+
   apache:
     container_name: "${COMPOSE_PROJECT_NAME}-apache"
-    #image: php:8.1-apache  # or another PHP version
 
     build:
       context: .
-      dockerfile: Dockerfile
-
-    # this is that the apache installs the extensions.
+      dockerfile: Dockerfile  # ✅ You can parameterize this if needed
 
     ports:
-      - "8181:80"    # prod site
-      - "8182:8182"  # stg site (via virtual host on port 8182)
+      - "8181:80"     # Prod
+      - "8182:8182"   # Staging (via vhost)
+
     volumes:
       - ./prd:/var/www/prd
       - ./stg:/var/www/stg
-      - ./input-data/prd.conf:/etc/apache2/sites-enabled/prd.conf #vhosts
-      - ./input-data/stg.conf:/etc/apache2/sites-enabled/stg.conf #vhosts
+      - ./input-data/prd.conf:/etc/apache2/sites-enabled/prd.conf
+      - ./input-data/stg.conf:/etc/apache2/sites-enabled/stg.conf
+
     depends_on:
       - db
+
     restart: always
 
+# ==========================================================
+# VOLUMES
+# ==========================================================
 volumes:
-    input-data:
-    db_data:
-    prd:
-    stg: 
+  input-data:
+  db_data:
+  prd:
+  stg:
