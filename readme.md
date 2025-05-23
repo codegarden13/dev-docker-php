@@ -12,12 +12,12 @@
 ```
 └── 📁xviz-static-portal
     └── 📁init-db
-        └── db.sql                  (example database)
+        └── db.sql                  (db init scripts, whatever you want. Processed in alphanumerical order)
     └── 📁input-data
         └── prd.conf
         └── stg.conf
     └── 📁logs
-    └── .env                        (Variables for docker-compose and bash scripts)
+    └── .env                        (Variables for docker-compose and bashes below)
     └── backup_subfolders.sh
     └── container-uninstall.sh
     └── docker-compose.yml
@@ -68,10 +68,9 @@ Listen 8182
 
 1. create file .env for the variables that are used in docker-compose.yml
 2. create a folder init-db where you may put a sql file to create a database structure for your project. 
-3. run `docker-compose up --build` so that the dockerfile is respected
-4. run `docker compose up -v` after a previous `./container-uninstall.sh`
+3. run `./container-re-install.sh`
 
-Now you can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
+Result: You can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
 
 ## Tips
 If something is messed up, rebuild from scratch: 

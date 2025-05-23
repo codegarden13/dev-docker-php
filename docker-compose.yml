@@ -1,6 +1,6 @@
 services:
   db:
-    #container_name: "${COMPOSE_PROJECT_NAME}-mysql"
+    container_name: "${COMPOSE_PROJECT_NAME}-mysql"
     # image: mysql:8  # ✅ Switched from mariadb to mysql:8 (multi-arch, includes mysqldump)
     image: mysql/mysql-server:8.0 #prevent arm issues on MacOs
 
@@ -19,7 +19,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: d3_articles  # ✅ Only created on first run
-
+  
     
 
     # 📝 Improvement Tip:
