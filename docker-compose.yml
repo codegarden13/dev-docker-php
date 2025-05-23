@@ -1,5 +1,3 @@
-version: "3.9"  # Optional but recommended for newer Compose features
-
 services:
   db:
     container_name: "${COMPOSE_PROJECT_NAME}-mysql"
@@ -28,7 +26,11 @@ services:
     # To avoid relying on .env only, you can use `${VAR:-default}` fallback syntax.
 
   phpmyadmin:
-    container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin"
+    container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin" 
+    #overrides Docker’s automatic DNS naming. 
+    #While service name DNS resolution will still work, it's often best to not override container_name unless necessary, to prevent ambiguity.
+
+
 
     depends_on:
       - db
@@ -43,7 +45,8 @@ services:
       UPLOAD_LIMIT: 500M
       MEMORY_LIMIT: 1010M
       MAX_EXECUTION_TIME: 100000
-      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
 
   apache:
     container_name: "${COMPOSE_PROJECT_NAME}-apache"

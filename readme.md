@@ -73,6 +73,18 @@ Listen 8182
 
 Now you can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
 
+## Tips
+If something is messed up, rebuild from scratch: 
+
+```bash
+docker-compose down -v
+docker-compose up --build
+```
+
+The -v removes volumes and triggers full reinitialization (including init-db SQL execution).
+
+
+
 ## ... backup.
 **Backup** of your work is crucial. In practise, you work in stg and prd. 
 GIT is perfect, but i had cases when GIT messed up folders, because i used Git wrong. 
