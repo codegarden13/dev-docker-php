@@ -1,7 +1,8 @@
 services:
   db:
-    container_name: "${COMPOSE_PROJECT_NAME}-mysql"
-    image: mysql:8  # ✅ Switched from mariadb to mysql:8 (multi-arch, includes mysqldump)
+    #container_name: "${COMPOSE_PROJECT_NAME}-mysql"
+    # image: mysql:8  # ✅ Switched from mariadb to mysql:8 (multi-arch, includes mysqldump)
+    image: mysql/mysql-server:8.0 #prevent arm issues on MacOs
 
     # Expose MySQL on custom port. Ensure ${IP} is set in your .env, or default to 127.0.0.1
     ports:
@@ -19,14 +20,15 @@ services:
       MYSQL_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: d3_articles  # ✅ Only created on first run
 
-    command: >
-      --default-authentication-plugin=mysql_native_password
+    
 
     # 📝 Improvement Tip:
     # To avoid relying on .env only, you can use `${VAR:-default}` fallback syntax.
 
   phpmyadmin:
-    container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin" 
+    #container_name: "${COMPOSE_PROJECT_NAME}-phpmyadmin" 
+    
+    
     #overrides Docker’s automatic DNS naming. 
     #While service name DNS resolution will still work, it's often best to not override container_name unless necessary, to prevent ambiguity.
 
@@ -42,11 +44,11 @@ services:
 
     environment:
       PMA_HOST: db
+      PMA_PORT: 3306
       UPLOAD_LIMIT: 500M
       MEMORY_LIMIT: 1010M
       MAX_EXECUTION_TIME: 100000
-      PMA_USER: ${PMA_USER}
-      PMA_PASSWORD: ${PMA_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
 
   apache:
     container_name: "${COMPOSE_PROJECT_NAME}-apache"
