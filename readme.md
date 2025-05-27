@@ -68,21 +68,9 @@ Listen 8182
 
 1. create file .env for the variables that are used in docker-compose.yml
 2. create a folder init-db where you may put a sql file to create a database structure for your project. 
-3. run `./container-re-install.sh`
+3. run `./container-re-install.sh`. This will also re-build anything from scratch, triggers full reinitialization (including init-db SQL execution). Existing container volumes will be removed.
 
 Result: You can write php/html to the webroot directories prd or stg, which are synced to the webroots of your instances. If you are good with your results, save it local using the backup function below.
-
-## Tips
-If something is messed up, rebuild from scratch: 
-
-```bash
-docker-compose down -v
-docker-compose up --build
-```
-
-The -v removes volumes and triggers full reinitialization (including init-db SQL execution).
-
-
 
 ## ... backup.
 **Backup** of your work is crucial. In practise, you work in stg and prd. 
