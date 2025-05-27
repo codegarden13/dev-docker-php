@@ -9,8 +9,6 @@ BACKUP_DEST="/Users/$(whoami)/Library/Mobile Documents/com~apple~CloudDocs/Docum
 
 echo BACKUP_DEST
 
-
-
 # Get the root folder name (where the script is run)
 ROOTFOLDER=$(basename "$PWD")
 
