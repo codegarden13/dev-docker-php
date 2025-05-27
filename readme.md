@@ -1,16 +1,10 @@
 ## Dockerfile for simple php dev 
-- Apache
-- PHP 8.1
-- Database (Mariadb for ARM)
-  - Example DB "d3_articles"
-- phpmyadmin (not really needed, maybe just inject "adminer" as a replacement)
+Apache, PHP 8.1, Mysql 6, Phpmyadmin
+Example DB "d3_articles" could be injected on startup (put the sql in the init-db folder)
 
-## prerequisites
-
-## (My) folder structure
 
 ```
-└── 📁xviz-static-portal
+└── 📁dev-docker-php
     └── 📁init-db
         └── db.sql                  (db init scripts, whatever you want. Processed in alphanumerical order)
     └── 📁input-data
