@@ -4,6 +4,24 @@ apache/
 .gitignore
 /input-data
 init-db/
+
+
 /logs
+
+# "prd" and "stg" are created during container spinup. 
+# they are "tmp", you can backup your work with the backup*.sh scripts.
+# Here youz can put your work.
+
+
 /prd
 /stg
+
+# Ignore DEV/STG comments. 
+# Not only in my stg area: Important files have a corresponding markdown file
+# They are prefixed with _ underscore and only "tmp".
+
+_*.md
+
+
+# Ignore Sub-Repos
+/.git

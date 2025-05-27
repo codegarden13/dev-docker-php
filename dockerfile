@@ -21,3 +21,6 @@ RUN apt-get update && apt-get install -y \
 
 # Optional: Enable Apache mod_rewrite (commonly used)
 RUN a2enmod rewrite
+
+#RUN apt update
+#RUN apt install mysql-client mysqldump
