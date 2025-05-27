@@ -7,7 +7,6 @@ services:
     # Expose MySQL on custom port. Ensure ${IP} is set in your .env, or default to 127.0.0.1
     ports:
       - ${IP:-127.0.0.1}:3307:3306  # 🔁 Changed right-hand port from 3307 to 3306 (MySQL default)
-
     volumes:
       - db_data:/var/lib/mysql                       # ✅ Persist MySQL data
       - ./init-db:/docker-entrypoint-initdb.d        # ✅ Init SQL scripts on first boot only
@@ -34,7 +33,7 @@ services:
     depends_on:
       - db
 
-    image: arm64v8/phpmyadmin  # ✅ ARM-compatible image for Apple Silicon
+    image: arm64v8/phpmyadmin  # ✅ ARM-compatible phpmyadmin image for Apple Silicon
 
     ports:
       - ${PHP_MY_ADMIN_PORT}:80
