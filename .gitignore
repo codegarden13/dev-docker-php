@@ -4,7 +4,8 @@ apache/
 .gitignore
 /input-data
 init-db/
-
+# if you create that folder, any SQL files here will be executed.
+# because the sql could contain private data, the folder is excluded.
 
 /logs
 
