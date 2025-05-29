@@ -5,8 +5,9 @@ services:
     image: mysql/mysql-server:8.0 #prevent arm issues on MacOs
 
     # Expose MySQL on custom port. Ensure ${IP} is set in your .env, or default to 127.0.0.1
+    
     ports:
-      - ${IP:-127.0.0.1}:3307:3306  # 🔁 Changed right-hand port from 3307 to 3306 (MySQL default)
+      - "3307:3306"  # Exposed to all interfaces for LAN access  
     volumes:
       - db_data:/var/lib/mysql                       # ✅ Persist MySQL data
       - ./init-db:/docker-entrypoint-initdb.d        # ✅ Init SQL scripts on first boot only
@@ -58,6 +59,7 @@ services:
     ports:
       - "8181:80"     # Prod
       - "8182:8182"   # Staging (via vhost)
+
 
     volumes:
       - ./prd:/var/www/prd
